@@ -1,168 +1,624 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>POAALAH — Scanner billets</title>
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>POAALAH - Scanner</title>
+
+  <script
+    src="https://unpkg.com/html5-qrcode"
+    type="text/javascript">
+  </script>
+
   <style>
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
+      padding: 20px;
       min-height: 100vh;
+
       font-family: Arial, sans-serif;
-      background: #111827;
-      color: white;
+
+      background:
+        linear-gradient(
+          135deg,
+          #111827,
+          #374151
+        );
+
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
     }
-    .app {
+
+    .card {
       width: 100%;
-      max-width: 520px;
-      background: #1f2937;
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 15px 40px rgba(0,0,0,.35);
-    }
-    h1 { text-align: center; margin: 0 0 8px; font-size: 28px; }
-    .subtitle { text-align: center; color: #d1d5db; margin-bottom: 22px; }
-    label { display: block; margin-bottom: 7px; font-weight: bold; }
-    input {
-      width: 100%;
-      padding: 15px;
-      border: 0;
-      border-radius: 12px;
-      font-size: 18px;
-      margin-bottom: 14px;
-    }
-    button {
-      width: 100%;
-      padding: 15px;
-      border: 0;
-      border-radius: 12px;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
+      max-width: 480px;
+
       background: white;
-      color: #111827;
-      margin-bottom: 12px;
+
+      border-radius: 24px;
+
+      padding: 28px 20px;
+
+      text-align: center;
+
+      box-shadow:
+        0 15px 40px rgba(0,0,0,0.30);
     }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+
+      margin-bottom: 5px;
+
+      color: #111827;
+    }
+
+    .event {
+      font-size: 16px;
+
+      color: #666;
+
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      margin: 0 0 20px;
+
+      color: #111827;
+    }
+
     #reader {
       width: 100%;
-      margin-top: 15px;
-      overflow: hidden;
-      border-radius: 16px;
-      background: #000;
+
+      max-width: 400px;
+
+      margin: 0 auto 20px;
     }
+
+    .pin-box {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+
+      text-align: left;
+
+      margin-bottom: 8px;
+
+      font-weight: bold;
+
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+
+      padding: 15px;
+
+      border: 1px solid #d1d5db;
+
+      border-radius: 12px;
+
+      font-size: 18px;
+
+      text-align: center;
+
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #111827;
+    }
+
+    button {
+      width: 100%;
+
+      padding: 16px;
+
+      border: none;
+
+      border-radius: 12px;
+
+      background: #111827;
+
+      color: white;
+
+      font-size: 18px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     .status {
-      text-align: center;
-      min-height: 25px;
-      margin-top: 12px;
-      color: #fbbf24;
-    }
-    .hidden { display: none; }
-    .small {
-      text-align: center;
-      color: #9ca3af;
-      font-size: 13px;
-      margin-top: 15px;
+      margin-top: 18px;
+
+      padding: 14px;
+
+      border-radius: 12px;
+
+      background: #f3f4f6;
+
+      color: #374151;
+
+      font-size: 15px;
+
       line-height: 1.4;
     }
+
+    .success {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .footer {
+      margin-top: 20px;
+
+      font-size: 12px;
+
+      color: #777;
+    }
+
   </style>
+
 </head>
+
+
 <body>
-  <div class="app">
-    <h1>POAALAH MIDLANDS</h1>
-    <div class="subtitle">Contrôle des billets — 20th Anniversary</div>
 
-    <label for="pin">Code personnel</label>
-    <input id="pin" type="password" inputmode="numeric" placeholder="Entrer le code">
 
-    <button id="startBtn" onclick="startScanner()">📷 DÉMARRER LE SCANNER</button>
+<div class="card">
 
-    <div id="reader" class="hidden"></div>
-    <div id="status" class="status"></div>
-
-    <form id="verifyForm" method="POST" action="https://script.google.com/macros/s/AKfycbw67DipS-ZiVHUZchHVcUXUs-egBcmGIXoL59Vlq9U7PTvTm4IIuFjpP6gJcMCquxwi/exec">
-      <input type="hidden" name="ticketId" id="ticketId">
-      <input type="hidden" name="pin" id="pinHidden">
-    </form>
-
-    <div class="small">
-      Autorise la caméra lorsque le navigateur le demande.<br>
-      Après le scan, la vérification se fait automatiquement.
-    </div>
+  <div class="logo">
+    POAALAH
   </div>
 
+  <div class="event">
+    MIDLANDS 20th ANNIVERSARY
+  </div>
+
+
+  <h2>
+    🎟️ CONTRÔLE DES BILLETS
+  </h2>
+
+
+  <div class="pin-box">
+
+    <label for="pin">
+      Code du personnel
+    </label>
+
+    <input
+      id="pin"
+      type="password"
+      inputmode="numeric"
+      placeholder="Entrer le code"
+      autocomplete="off"
+    >
+
+  </div>
+
+
+  <button
+    id="startButton"
+    onclick="demarrerScanner()">
+
+    📷 DÉMARRER LE SCANNER
+
+  </button>
+
+
+  <div
+    id="reader"
+    style="display:none;">
+  </div>
+
+
+  <div
+    id="status"
+    class="status">
+
+    Entrez le code du personnel,
+    puis démarrez le scanner.
+
+  </div>
+
+
+  <div class="footer">
+
+    Système officiel de contrôle des entrées
+
+  </div>
+
+</div>
+
+
 <script>
-  let scanner = null;
-  let scanning = false;
 
-  async function startScanner() {
-    const pin = document.getElementById("pin").value.trim();
 
-    if (!pin) {
-      document.getElementById("status").textContent = "⚠️ Entre d'abord le code personnel.";
-      return;
-    }
+/* =====================================================
+   URL DE TON APPLICATION GOOGLE APPS SCRIPT
+   ===================================================== */
 
-    document.getElementById("status").textContent = "Ouverture de la caméra…";
-    document.getElementById("reader").classList.remove("hidden");
-    document.getElementById("startBtn").disabled = true;
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycby-xfr0nWuNCMVozDFDjtH6hJyJS7EY3eoHht1ePzklJiNYZDwjOcXMmD5CVdFPT9qO/exec";
 
-    scanner = new Html5Qrcode("reader");
 
-    try {
-      await scanner.start(
-        { facingMode: "environment" },
-        {
-          fps: 10,
-          qrbox: { width: 250, height: 250 }
-        },
-        onScanSuccess,
-        function(errorMessage) {}
-      );
+/* =====================================================
+   VARIABLES
+   ===================================================== */
 
-      scanning = true;
-      document.getElementById("status").textContent = "📷 Place le QR code dans le cadre.";
+let scanner = null;
 
-    } catch (error) {
-      document.getElementById("status").textContent =
-        "❌ Impossible d'ouvrir la caméra. Vérifie que la page est en HTTPS et que la caméra est autorisée.";
-      document.getElementById("reader").classList.add("hidden");
-      document.getElementById("startBtn").disabled = false;
-      scanner = null;
-    }
+let scanEnCours = false;
+
+
+/* =====================================================
+   DÉMARRER LE SCANNER
+   ===================================================== */
+
+async function demarrerScanner() {
+
+  const pin =
+    document
+      .getElementById("pin")
+      .value
+      .trim();
+
+
+  /* Vérifier le code */
+
+  if (!pin) {
+
+    afficherStatus(
+      "⚠️ Entre d'abord le code du personnel.",
+      "error"
+    );
+
+    return;
   }
 
-  async function onScanSuccess(decodedText) {
-    if (!scanning) return;
 
-    scanning = false;
+  /* Vérifier l'URL */
 
-    try {
+  if (
+    APPS_SCRIPT_URL ===
+    "COLLE_ICI_TON_URL_APPS_SCRIPT_EN_EXEC"
+  ) {
+
+    afficherStatus(
+      "⚠️ L'URL Apps Script n'a pas encore été configurée.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  /* Préparer l'écran */
+
+  document
+    .getElementById("reader")
+    .style.display = "block";
+
+
+  document
+    .getElementById("startButton")
+    .disabled = true;
+
+
+  afficherStatus(
+    "📷 Ouverture de la caméra...",
+    ""
+  );
+
+
+  scanEnCours = false;
+
+
+  try {
+
+    scanner =
+      new Html5Qrcode("reader");
+
+
+    await scanner.start(
+
+      {
+        facingMode: "environment"
+      },
+
+      {
+        fps: 10,
+
+        qrbox: {
+          width: 260,
+          height: 260
+        }
+      },
+
+      onScanSuccess,
+
+      function(errorMessage) {
+
+        /*
+
+        Les erreurs de lecture normales
+        sont ignorées.
+
+        */
+
+      }
+
+    );
+
+
+    afficherStatus(
+      "📷 Scanner prêt. Place le QR code dans le cadre.",
+      "success"
+    );
+
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    afficherStatus(
+
+      "❌ Impossible d'ouvrir la caméra. " +
+      "Vérifie que le navigateur a autorisé " +
+      "l'utilisation de la caméra.",
+
+      "error"
+
+    );
+
+
+    document
+      .getElementById("startButton")
+      .disabled = false;
+
+  }
+
+}
+
+
+/* =====================================================
+   QR CODE DÉTECTÉ
+   ===================================================== */
+
+async function onScanSuccess(decodedText) {
+
+  /* Empêcher plusieurs lectures */
+
+  if (scanEnCours) {
+    return;
+  }
+
+  scanEnCours = true;
+
+
+  console.log(
+    "QR détecté :",
+    decodedText
+  );
+
+
+  /* Arrêter la caméra */
+
+  try {
+
+    if (scanner) {
+
       await scanner.stop();
-    } catch (e) {}
 
-    document.getElementById("status").textContent = "✅ QR détecté — vérification…";
+      await scanner.clear();
 
-    const ticketId = String(decodedText || "").trim();
-
-    if (!ticketId) {
-      document.getElementById("status").textContent = "❌ QR code vide.";
-      document.getElementById("startBtn").disabled = false;
-      scanning = false;
-      return;
     }
 
-    document.getElementById("ticketId").value = ticketId;
-    document.getElementById("pinHidden").value =
-      document.getElementById("pin").value.trim();
+  } catch (error) {
 
-    document.getElementById("verifyForm").submit();
+    console.log(
+      "Arrêt scanner :",
+      error
+    );
+
   }
+
+
+  /* Récupérer le PIN */
+
+  const pin =
+    document
+      .getElementById("pin")
+      .value
+      .trim();
+
+
+  /* Message */
+
+  afficherStatus(
+    "⏳ Vérification du billet...",
+    ""
+  );
+
+
+  /*
+   * IMPORTANT :
+   *
+   * Le QR actuel contient le Ticket ID.
+   *
+   * On l'envoie à Apps Script avec
+   * le code du personnel.
+   */
+
+
+  envoyerBillet(
+    decodedText,
+    pin
+  );
+
+}
+
+
+/* =====================================================
+   ENVOYER LE BILLET À GOOGLE APPS SCRIPT
+   ===================================================== */
+
+function envoyerBillet(
+  ticketId,
+  pin
+) {
+
+
+  /*
+   * Création d'un formulaire invisible.
+   *
+   * POST = le PIN n'apparaît pas
+   * dans l'URL.
+   */
+
+
+  const form =
+    document.createElement("form");
+
+
+  form.method = "POST";
+
+  form.action =
+    APPS_SCRIPT_URL;
+
+  form.style.display =
+    "none";
+
+
+  /* Ticket ID */
+
+  const ticketInput =
+    document.createElement("input");
+
+  ticketInput.type =
+    "hidden";
+
+  ticketInput.name =
+    "ticketId";
+
+  ticketInput.value =
+    ticketId;
+
+
+  /* PIN */
+
+  const pinInput =
+    document.createElement("input");
+
+  pinInput.type =
+    "hidden";
+
+  pinInput.name =
+    "pin";
+
+  pinInput.value =
+    pin;
+
+
+  form.appendChild(
+    ticketInput
+  );
+
+  form.appendChild(
+    pinInput
+  );
+
+
+  document.body.appendChild(
+    form
+  );
+
+
+  /* Envoyer */
+
+  form.submit();
+
+}
+
+
+/* =====================================================
+   AFFICHER UN MESSAGE
+   ===================================================== */
+
+function afficherStatus(
+  message,
+  type
+) {
+
+  const status =
+    document.getElementById(
+      "status"
+    );
+
+
+  status.textContent =
+    message;
+
+
+  status.className =
+    "status";
+
+
+  if (type === "success") {
+
+    status.classList.add(
+      "success"
+    );
+
+  }
+
+
+  if (type === "error") {
+
+    status.classList.add(
+      "error"
+    );
+
+  }
+
+}
+
 </script>
+
+
 </body>
+
 </html>
