@@ -1,194 +1,187 @@
 <!DOCTYPE html>
+
 <html lang="fr">
 
 <head>
 
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1"
+>
 
-  <title>POAALAH - Scanner</title>
+<title>
+POAALAH - Scanner
+</title>
 
-  <script
-    src="https://unpkg.com/html5-qrcode"
-    type="text/javascript">
-  </script>
 
-  <style>
+<script
+  src="https://unpkg.com/html5-qrcode"
+  type="text/javascript">
+</script>
 
-    * {
-      box-sizing: border-box;
-    }
 
-    body {
-      margin: 0;
-      padding: 20px;
-      min-height: 100vh;
+<style>
 
-      font-family: Arial, sans-serif;
+* {
+  box-sizing: border-box;
+}
 
-      background:
-        linear-gradient(
-          135deg,
-          #111827,
-          #374151
-        );
+body {
 
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+  margin: 0;
 
-    .card {
-      width: 100%;
-      max-width: 480px;
+  min-height: 100vh;
 
-      background: white;
+  padding: 15px;
 
-      border-radius: 24px;
+  font-family: Arial, sans-serif;
 
-      padding: 28px 20px;
+  background:
+    linear-gradient(
+      135deg,
+      #061a3a,
+      #0066cc,
+      #00132d
+    );
 
-      text-align: center;
+  color: white;
 
-      box-shadow:
-        0 15px 40px rgba(0,0,0,0.30);
-    }
+}
 
-    .logo {
-      font-size: 28px;
-      font-weight: bold;
+.container {
 
-      margin-bottom: 5px;
+  width: 100%;
 
-      color: #111827;
-    }
+  max-width: 500px;
 
-    .event {
-      font-size: 16px;
+  margin: auto;
 
-      color: #666;
+  text-align: center;
 
-      margin-bottom: 25px;
-    }
+}
 
-    h2 {
-      margin: 0 0 20px;
+h1 {
 
-      color: #111827;
-    }
+  margin: 10px 0 5px;
 
-    #reader {
-      width: 100%;
+  font-size: 30px;
 
-      max-width: 400px;
+  font-weight: bold;
 
-      margin: 0 auto 20px;
-    }
+}
 
-    .pin-box {
-      margin-bottom: 20px;
-    }
+.subtitle {
 
-    label {
-      display: block;
+  font-size: 17px;
 
-      text-align: left;
+  margin-bottom: 20px;
 
-      margin-bottom: 8px;
+}
 
-      font-weight: bold;
+.box {
 
-      color: #333;
-    }
+  background: white;
 
-    input {
-      width: 100%;
+  color: #111;
 
-      padding: 15px;
+  border-radius: 18px;
 
-      border: 1px solid #d1d5db;
+  padding: 20px;
 
-      border-radius: 12px;
+  box-shadow:
+    0 8px 30px rgba(0,0,0,.4);
 
-      font-size: 18px;
+}
 
-      text-align: center;
+label {
 
-      outline: none;
-    }
+  display: block;
 
-    input:focus {
-      border-color: #111827;
-    }
+  text-align: left;
 
-    button {
-      width: 100%;
+  font-weight: bold;
 
-      padding: 16px;
+  margin-bottom: 6px;
 
-      border: none;
+}
 
-      border-radius: 12px;
+input {
 
-      background: #111827;
+  width: 100%;
 
-      color: white;
+  padding: 14px;
 
-      font-size: 18px;
+  border: 2px solid #ddd;
 
-      font-weight: bold;
+  border-radius: 10px;
 
-      cursor: pointer;
-    }
+  font-size: 18px;
 
-    button:active {
-      transform: scale(0.98);
-    }
+  margin-bottom: 15px;
 
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+}
 
-    .status {
-      margin-top: 18px;
+button {
 
-      padding: 14px;
+  width: 100%;
 
-      border-radius: 12px;
+  padding: 15px;
 
-      background: #f3f4f6;
+  border: none;
 
-      color: #374151;
+  border-radius: 10px;
 
-      font-size: 15px;
+  background: #0066cc;
 
-      line-height: 1.4;
-    }
+  color: white;
 
-    .success {
-      background: #dcfce7;
-      color: #166534;
-    }
+  font-size: 18px;
 
-    .error {
-      background: #fee2e2;
-      color: #991b1b;
-    }
+  font-weight: bold;
 
-    .footer {
-      margin-top: 20px;
+  margin-bottom: 15px;
 
-      font-size: 12px;
+}
 
-      color: #777;
-    }
+button:active {
 
-  </style>
+  transform: scale(.98);
+
+}
+
+#reader {
+
+  width: 100%;
+
+  margin-top: 10px;
+
+}
+
+.info {
+
+  margin-top: 15px;
+
+  padding: 12px;
+
+  background: #eef6ff;
+
+  border-radius: 10px;
+
+  color: #164e7a;
+
+  font-size: 14px;
+
+}
+
+.hidden {
+
+  display: none;
+
+}
+
+</style>
 
 </head>
 
@@ -196,98 +189,143 @@
 <body>
 
 
-<div class="card">
+<div class="container">
 
-  <div class="logo">
-    POAALAH
+
+  <h1>
+    POAALAH MIDLANDS
+  </h1>
+
+
+  <div class="subtitle">
+
+    20th Anniversary
+    <br>
+
+    CONTRÔLE DES BILLETS
+
   </div>
 
-  <div class="event">
-    MIDLANDS 20th ANNIVERSARY
-  </div>
 
+  <div class="box">
 
-  <h2>
-    🎟️ CONTRÔLE DES BILLETS
-  </h2>
-
-
-  <div class="pin-box">
 
     <label for="pin">
+
       Code du personnel
+
     </label>
+
 
     <input
       id="pin"
       type="password"
       inputmode="numeric"
-      placeholder="Entrer le code"
+      placeholder="Code"
+      maxlength="10"
       autocomplete="off"
     >
 
-  </div>
+
+    <button
+      id="startButton"
+      onclick="startScanner()"
+    >
+
+      📷 SCANNER UN BILLET
+
+    </button>
 
 
-  <button
-    id="startButton"
-    onclick="demarrerScanner()">
-
-    📷 DÉMARRER LE SCANNER
-
-  </button>
+    <div
+      id="reader">
+    </div>
 
 
-  <div
-    id="reader"
-    style="display:none;">
-  </div>
+    <div
+      id="info"
+      class="info hidden">
+    </div>
 
-
-  <div
-    id="status"
-    class="status">
-
-    Entrez le code du personnel,
-    puis démarrez le scanner.
 
   </div>
 
-
-  <div class="footer">
-
-    Système officiel de contrôle des entrées
-
-  </div>
 
 </div>
+
+
+<!-- ===================================================== -->
+<!-- FORMULAIRE INVISIBLE ENVOYÉ À GOOGLE APPS SCRIPT -->
+<!-- ===================================================== -->
+
+<form
+  id="verifyForm"
+  method="POST"
+  action="https://script.google.com/macros/s/AKfycbY-xfrOnWuNCWozDFDjTtH6hyJS7EY3eoHht1ePzkLjNiYZDwjOcXMmD5CVdfFPT9q0/exec"
+  class="hidden"
+>
+
+  <input
+    type="hidden"
+    name="ticketId"
+    id="ticketIdField"
+  >
+
+  <input
+    type="hidden"
+    name="pin"
+    id="pinField"
+  >
+
+</form>
 
 
 <script>
 
 
-/* =====================================================
-   URL DE TON APPLICATION GOOGLE APPS SCRIPT
-   ===================================================== */
-
-const APPS_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycby-xfr0nWuNCMVozDFDjtH6hJyJS7EY3eoHht1ePzklJiNYZDwjOcXMmD5CVdFPT9qO/exec";
-
-
-/* =====================================================
-   VARIABLES
-   ===================================================== */
+/* ==========================================================
+   CONFIGURATION
+   ========================================================== */
 
 let scanner = null;
 
-let scanEnCours = false;
+let scannerRunning = false;
+
+let scanProcessing = false;
 
 
-/* =====================================================
+/* ==========================================================
+   AU CHARGEMENT
+   ========================================================== */
+
+window.addEventListener(
+  "load",
+  function() {
+
+    const savedPin =
+      sessionStorage.getItem(
+        "poaalah_scanner_pin"
+      );
+
+
+    if (savedPin) {
+
+      document
+        .getElementById("pin")
+        .value = savedPin;
+
+    }
+
+  }
+);
+
+
+/* ==========================================================
    DÉMARRER LE SCANNER
-   ===================================================== */
+   ========================================================== */
 
-async function demarrerScanner() {
+function startScanner() {
+
 
   const pin =
     document
@@ -296,40 +334,40 @@ async function demarrerScanner() {
       .trim();
 
 
-  /* Vérifier le code */
-
   if (!pin) {
 
-    afficherStatus(
-      "⚠️ Entre d'abord le code du personnel.",
-      "error"
+    showInfo(
+      "⚠️ Entre le code du personnel.",
+      true
     );
 
     return;
+
   }
 
 
-  /* Vérifier l'URL */
+  /*
+   * On mémorise le PIN uniquement
+   * pendant la session du navigateur.
+   */
 
-  if (
-    APPS_SCRIPT_URL ===
-    "COLLE_ICI_TON_URL_APPS_SCRIPT_EN_EXEC"
-  ) {
+  sessionStorage.setItem(
+    "poaalah_scanner_pin",
+    pin
+  );
 
-    afficherStatus(
-      "⚠️ L'URL Apps Script n'a pas encore été configurée.",
-      "error"
-    );
+
+  if (scannerRunning) {
 
     return;
+
   }
 
 
-  /* Préparer l'écran */
+  scanProcessing = false;
 
-  document
-    .getElementById("reader")
-    .style.display = "block";
+
+  hideInfo();
 
 
   document
@@ -337,34 +375,41 @@ async function demarrerScanner() {
     .disabled = true;
 
 
-  afficherStatus(
-    "📷 Ouverture de la caméra...",
-    ""
-  );
+  document
+    .getElementById("startButton")
+    .innerText =
+      "📷 CAMÉRA ACTIVE";
 
 
-  scanEnCours = false;
+  /*
+   * Nettoyage du lecteur
+   */
+
+  document
+    .getElementById("reader")
+    .innerHTML = "";
 
 
-  try {
-
-    scanner =
-      new Html5Qrcode("reader");
+  scanner =
+    new Html5Qrcode("reader");
 
 
-    await scanner.start(
+  scanner
+    .start(
 
       {
         facingMode: "environment"
       },
 
       {
+
         fps: 10,
 
         qrbox: {
-          width: 260,
-          height: 260
+          width: 250,
+          height: 250
         }
+
       },
 
       onScanSuccess,
@@ -372,92 +417,86 @@ async function demarrerScanner() {
       function(errorMessage) {
 
         /*
-
-        Les erreurs de lecture normales
-        sont ignorées.
-
-        */
+         * Ne rien afficher.
+         * Les petites erreurs de lecture
+         * sont normales pendant le scan.
+         */
 
       }
 
+    )
+
+    .then(
+      function() {
+
+        scannerRunning = true;
+
+      }
+    )
+
+    .catch(
+      function(error) {
+
+        scannerRunning = false;
+
+        document
+          .getElementById("startButton")
+          .disabled = false;
+
+        document
+          .getElementById("startButton")
+          .innerText =
+            "📷 SCANNER UN BILLET";
+
+
+        showInfo(
+
+          "❌ Impossible d'ouvrir la caméra." +
+
+          "<br><br>" +
+
+          "Vérifie que tu as autorisé " +
+
+          "l'accès à la caméra du navigateur.",
+
+          true
+
+        );
+
+      }
     );
-
-
-    afficherStatus(
-      "📷 Scanner prêt. Place le QR code dans le cadre.",
-      "success"
-    );
-
-
-  } catch (error) {
-
-    console.error(error);
-
-
-    afficherStatus(
-
-      "❌ Impossible d'ouvrir la caméra. " +
-      "Vérifie que le navigateur a autorisé " +
-      "l'utilisation de la caméra.",
-
-      "error"
-
-    );
-
-
-    document
-      .getElementById("startButton")
-      .disabled = false;
-
-  }
 
 }
 
 
-/* =====================================================
-   QR CODE DÉTECTÉ
-   ===================================================== */
+/* ==========================================================
+   QR DÉTECTÉ
+   ========================================================== */
 
-async function onScanSuccess(decodedText) {
+function onScanSuccess(decodedText) {
 
-  /* Empêcher plusieurs lectures */
 
-  if (scanEnCours) {
+  if (!scannerRunning) {
+
     return;
-  }
-
-  scanEnCours = true;
-
-
-  console.log(
-    "QR détecté :",
-    decodedText
-  );
-
-
-  /* Arrêter la caméra */
-
-  try {
-
-    if (scanner) {
-
-      await scanner.stop();
-
-      await scanner.clear();
-
-    }
-
-  } catch (error) {
-
-    console.log(
-      "Arrêt scanner :",
-      error
-    );
 
   }
 
 
-  /* Récupérer le PIN */
+  if (scanProcessing) {
+
+    return;
+
+  }
+
+
+  scanProcessing = true;
+
+
+  const ticketId =
+    String(decodedText || "")
+      .trim();
+
 
   const pin =
     document
@@ -466,153 +505,172 @@ async function onScanSuccess(decodedText) {
       .trim();
 
 
-  /* Message */
+  if (!ticketId) {
 
-  afficherStatus(
-    "⏳ Vérification du billet...",
-    ""
+    scanProcessing = false;
+
+    return;
+
+  }
+
+
+  /*
+   * Arrêt immédiat de la caméra.
+   */
+
+  stopScanner();
+
+
+  /*
+   * Préparer le formulaire.
+   */
+
+  document
+    .getElementById("ticketIdField")
+    .value =
+      ticketId;
+
+
+  document
+    .getElementById("pinField")
+    .value =
+      pin;
+
+
+  /*
+   * Message temporaire.
+   */
+
+  showInfo(
+    "⏳ Vérification du billet..."
   );
 
 
   /*
-   * IMPORTANT :
+   * Envoi vers Apps Script.
    *
-   * Le QR actuel contient le Ticket ID.
+   * PAS de google.script.run ici.
    *
-   * On l'envoie à Apps Script avec
-   * le code du personnel.
+   * Le navigateur va recevoir directement
+   * la page de résultat générée par Apps Script.
    */
 
+  setTimeout(
+    function() {
 
-  envoyerBillet(
-    decodedText,
-    pin
+      document
+        .getElementById("verifyForm")
+        .submit();
+
+    },
+    200
   );
 
 }
 
 
-/* =====================================================
-   ENVOYER LE BILLET À GOOGLE APPS SCRIPT
-   ===================================================== */
+/* ==========================================================
+   ARRÊTER LA CAMÉRA
+   ========================================================== */
 
-function envoyerBillet(
-  ticketId,
-  pin
-) {
+function stopScanner() {
 
 
-  /*
-   * Création d'un formulaire invisible.
-   *
-   * POST = le PIN n'apparaît pas
-   * dans l'URL.
-   */
+  if (!scanner) {
+
+    scannerRunning = false;
+
+    return;
+
+  }
 
 
-  const form =
-    document.createElement("form");
+  if (!scannerRunning) {
+
+    return;
+
+  }
 
 
-  form.method = "POST";
+  scanner
+    .stop()
 
-  form.action =
-    APPS_SCRIPT_URL;
+    .then(
+      function() {
 
-  form.style.display =
-    "none";
+        scannerRunning = false;
 
+      }
+    )
 
-  /* Ticket ID */
+    .catch(
+      function() {
 
-  const ticketInput =
-    document.createElement("input");
+        scannerRunning = false;
 
-  ticketInput.type =
-    "hidden";
-
-  ticketInput.name =
-    "ticketId";
-
-  ticketInput.value =
-    ticketId;
-
-
-  /* PIN */
-
-  const pinInput =
-    document.createElement("input");
-
-  pinInput.type =
-    "hidden";
-
-  pinInput.name =
-    "pin";
-
-  pinInput.value =
-    pin;
-
-
-  form.appendChild(
-    ticketInput
-  );
-
-  form.appendChild(
-    pinInput
-  );
-
-
-  document.body.appendChild(
-    form
-  );
-
-
-  /* Envoyer */
-
-  form.submit();
-
-}
-
-
-/* =====================================================
-   AFFICHER UN MESSAGE
-   ===================================================== */
-
-function afficherStatus(
-  message,
-  type
-) {
-
-  const status =
-    document.getElementById(
-      "status"
+      }
     );
 
+}
 
-  status.textContent =
+
+/* ==========================================================
+   MESSAGE
+   ========================================================== */
+
+function showInfo(
+  message,
+  error
+) {
+
+
+  const info =
+    document
+      .getElementById("info");
+
+
+  info.innerHTML =
     message;
 
 
-  status.className =
-    "status";
+  info.classList.remove(
+    "hidden"
+  );
 
 
-  if (type === "success") {
+  if (error) {
 
-    status.classList.add(
-      "success"
-    );
+    info.style.background =
+      "#ffe0e0";
+
+    info.style.color =
+      "#8b0000";
+
+  }
+
+  else {
+
+    info.style.background =
+      "#eef6ff";
+
+    info.style.color =
+      "#164e7a";
 
   }
 
+}
 
-  if (type === "error") {
 
-    status.classList.add(
-      "error"
-    );
+/* ==========================================================
+   CACHER MESSAGE
+   ========================================================== */
 
-  }
+function hideInfo() {
+
+  document
+    .getElementById("info")
+    .classList
+    .add("hidden");
 
 }
 
