@@ -2,14 +2,17 @@
 
 <html lang="fr">
 
+
 <head>
 
 <meta charset="UTF-8">
+
 
 <meta
   name="viewport"
   content="width=device-width, initial-scale=1"
 >
+
 
 <title>
 POAALAH - Scanner
@@ -18,8 +21,8 @@ POAALAH - Scanner
 
 <script
   src="https://unpkg.com/html5-qrcode"
-  type="text/javascript">
-</script>
+  type="text/javascript"
+></script>
 
 
 <style>
@@ -27,6 +30,7 @@ POAALAH - Scanner
 * {
   box-sizing: border-box;
 }
+
 
 body {
 
@@ -50,6 +54,7 @@ body {
 
 }
 
+
 .container {
 
   width: 100%;
@@ -62,15 +67,18 @@ body {
 
 }
 
+
 h1 {
 
-  margin: 10px 0 5px;
+  margin:
+    10px 0 5px;
 
   font-size: 30px;
 
   font-weight: bold;
 
 }
+
 
 .subtitle {
 
@@ -79,6 +87,7 @@ h1 {
   margin-bottom: 20px;
 
 }
+
 
 .box {
 
@@ -91,9 +100,11 @@ h1 {
   padding: 20px;
 
   box-shadow:
-    0 8px 30px rgba(0,0,0,.4);
+    0 8px 30px
+    rgba(0,0,0,.4);
 
 }
+
 
 label {
 
@@ -107,13 +118,15 @@ label {
 
 }
 
+
 input {
 
   width: 100%;
 
   padding: 14px;
 
-  border: 2px solid #ddd;
+  border:
+    2px solid #ddd;
 
   border-radius: 10px;
 
@@ -122,6 +135,7 @@ input {
   margin-bottom: 15px;
 
 }
+
 
 button {
 
@@ -145,11 +159,13 @@ button {
 
 }
 
-button:active {
 
-  transform: scale(.98);
+button:disabled {
+
+  opacity: .7;
 
 }
+
 
 #reader {
 
@@ -158,6 +174,7 @@ button:active {
   margin-top: 10px;
 
 }
+
 
 .info {
 
@@ -174,6 +191,7 @@ button:active {
   font-size: 14px;
 
 }
+
 
 .hidden {
 
@@ -192,90 +210,92 @@ button:active {
 <div class="container">
 
 
-  <h1>
-    POAALAH MIDLANDS
-  </h1>
+<h1>
+POAALAH MIDLANDS
+</h1>
 
 
-  <div class="subtitle">
+<div class="subtitle">
 
-    20th Anniversary
-    <br>
+20th Anniversary<br>
 
-    CONTRÔLE DES BILLETS
+CONTRÔLE DES BILLETS
 
-  </div>
-
-
-  <div class="box">
+</div>
 
 
-    <label for="pin">
-
-      Code du personnel
-
-    </label>
+<div class="box">
 
 
-    <input
-      id="pin"
-      type="password"
-      inputmode="numeric"
-      placeholder="Code"
-      maxlength="10"
-      autocomplete="off"
-    >
+<label for="pin">
+
+Code du personnel
+
+</label>
 
 
-    <button
-      id="startButton"
-      onclick="startScanner()"
-    >
-
-      📷 SCANNER UN BILLET
-
-    </button>
-
-
-    <div
-      id="reader">
-    </div>
+<input
+  id="pin"
+  type="password"
+  inputmode="numeric"
+  placeholder="Code"
+  maxlength="10"
+  autocomplete="off"
+>
 
 
-    <div
-      id="info"
-      class="info hidden">
-    </div>
+<button
+  id="startButton"
+  onclick="startScanner()"
+>
+
+📷 SCANNER UN BILLET
+
+</button>
 
 
-  </div>
+<div id="reader"></div>
+
+
+<div
+  id="info"
+  class="info hidden"
+></div>
 
 
 </div>
 
 
-<!-- ===================================================== -->
-<!-- FORMULAIRE INVISIBLE ENVOYÉ À GOOGLE APPS SCRIPT -->
-<!-- ===================================================== -->
+</div>
+
+
+<!-- ========================================================
+     FORMULAIRE INVISIBLE
+     ENVOI VERS GOOGLE APPS SCRIPT
+     ======================================================== -->
+
 
 <form
   id="verifyForm"
   method="POST"
-  action="https://script.google.com/macros/s/AKfycbY-xfrOnWuNCWozDFDjTtH6hyJS7EY3eoHht1ePzkLjNiYZDwjOcXMmD5CVdfFPT9q0/exec"
+  action="https://script.google.com/macros/s/AKfycbw67DipS-ZiVHUZchHVcUXUs-egBcmGIXoL59Vlq9U7PTvTm4IIuFjpP6gJcMCquxwi/exec"
   class="hidden"
 >
 
-  <input
-    type="hidden"
-    name="ticketId"
-    id="ticketIdField"
-  >
 
-  <input
-    type="hidden"
-    name="pin"
-    id="pinField"
-  >
+<input
+  type="hidden"
+  name="ticketId"
+  id="ticketIdField"
+>
+
+
+<input
+  type="hidden"
+  name="pin"
+  id="pinField"
+>
+
 
 </form>
 
@@ -283,9 +303,10 @@ button:active {
 <script>
 
 
-/* ==========================================================
-   CONFIGURATION
-   ========================================================== */
+// ============================================================
+// VARIABLES
+// ============================================================
+
 
 let scanner = null;
 
@@ -294,13 +315,18 @@ let scannerRunning = false;
 let scanProcessing = false;
 
 
-/* ==========================================================
-   AU CHARGEMENT
-   ========================================================== */
+// ============================================================
+// CHARGEMENT DE LA PAGE
+// ============================================================
 
 window.addEventListener(
   "load",
   function() {
+
+
+    // --------------------------------------------------------
+    // RÉCUPÉRER LE PIN DE LA SESSION
+    // --------------------------------------------------------
 
     const savedPin =
       sessionStorage.getItem(
@@ -316,16 +342,21 @@ window.addEventListener(
 
     }
 
+
   }
 );
 
 
-/* ==========================================================
-   DÉMARRER LE SCANNER
-   ========================================================== */
+// ============================================================
+// DÉMARRER LE SCANNER
+// ============================================================
 
 function startScanner() {
 
+
+  // ----------------------------------------------------------
+  // RÉCUPÉRER LE PIN
+  // ----------------------------------------------------------
 
   const pin =
     document
@@ -333,6 +364,10 @@ function startScanner() {
       .value
       .trim();
 
+
+  // ----------------------------------------------------------
+  // PIN MANQUANT
+  // ----------------------------------------------------------
 
   if (!pin) {
 
@@ -346,16 +381,19 @@ function startScanner() {
   }
 
 
-  /*
-   * On mémorise le PIN uniquement
-   * pendant la session du navigateur.
-   */
+  // ----------------------------------------------------------
+  // SAUVEGARDER LE PIN POUR CETTE SESSION
+  // ----------------------------------------------------------
 
   sessionStorage.setItem(
     "poaalah_scanner_pin",
     pin
   );
 
+
+  // ----------------------------------------------------------
+  // ÉVITER DE DÉMARRER DEUX CAMÉRAS
+  // ----------------------------------------------------------
 
   if (scannerRunning) {
 
@@ -370,29 +408,36 @@ function startScanner() {
   hideInfo();
 
 
-  document
-    .getElementById("startButton")
-    .disabled = true;
+  const startButton =
+    document
+      .getElementById(
+        "startButton"
+      );
 
 
-  document
-    .getElementById("startButton")
-    .innerText =
-      "📷 CAMÉRA ACTIVE";
+  startButton.disabled = true;
 
 
-  /*
-   * Nettoyage du lecteur
-   */
+  startButton.innerText =
+    "📷 CAMÉRA ACTIVE";
+
 
   document
     .getElementById("reader")
     .innerHTML = "";
 
 
+  // ----------------------------------------------------------
+  // CRÉATION DU SCANNER
+  // ----------------------------------------------------------
+
   scanner =
     new Html5Qrcode("reader");
 
+
+  // ----------------------------------------------------------
+  // DÉMARRAGE DE LA CAMÉRA
+  // ----------------------------------------------------------
 
   scanner
     .start(
@@ -401,30 +446,34 @@ function startScanner() {
         facingMode: "environment"
       },
 
+
       {
 
         fps: 10,
 
         qrbox: {
+
           width: 250,
+
           height: 250
+
         }
 
       },
 
+
       onScanSuccess,
+
 
       function(errorMessage) {
 
-        /*
-         * Ne rien afficher.
-         * Les petites erreurs de lecture
-         * sont normales pendant le scan.
-         */
+        // Ne rien afficher
+        // pendant la recherche du QR.
 
       }
 
     )
+
 
     .then(
       function() {
@@ -434,34 +483,32 @@ function startScanner() {
       }
     )
 
+
     .catch(
       function(error) {
 
+
         scannerRunning = false;
 
-        document
-          .getElementById("startButton")
-          .disabled = false;
 
-        document
-          .getElementById("startButton")
-          .innerText =
-            "📷 SCANNER UN BILLET";
+        startButton.disabled = false;
+
+
+        startButton.innerText =
+          "📷 SCANNER UN BILLET";
 
 
         showInfo(
 
           "❌ Impossible d'ouvrir la caméra." +
-
           "<br><br>" +
-
-          "Vérifie que tu as autorisé " +
-
-          "l'accès à la caméra du navigateur.",
+          "Autorise l'accès à la caméra " +
+          "dans ton navigateur.",
 
           true
 
         );
+
 
       }
     );
@@ -469,21 +516,21 @@ function startScanner() {
 }
 
 
-/* ==========================================================
-   QR DÉTECTÉ
-   ========================================================== */
+// ============================================================
+// QR CODE DÉTECTÉ
+// ============================================================
 
 function onScanSuccess(decodedText) {
 
 
-  if (!scannerRunning) {
+  // ----------------------------------------------------------
+  // ÉVITER LES DOUBLES SCANS
+  // ----------------------------------------------------------
 
-    return;
-
-  }
-
-
-  if (scanProcessing) {
+  if (
+    !scannerRunning ||
+    scanProcessing
+  ) {
 
     return;
 
@@ -493,10 +540,19 @@ function onScanSuccess(decodedText) {
   scanProcessing = true;
 
 
-  const ticketId =
-    String(decodedText || "")
-      .trim();
+  // ----------------------------------------------------------
+  // RÉCUPÉRER LE TICKET ID
+  // ----------------------------------------------------------
 
+  const ticketId =
+    String(
+      decodedText || ""
+    ).trim();
+
+
+  // ----------------------------------------------------------
+  // RÉCUPÉRER LE PIN
+  // ----------------------------------------------------------
 
   const pin =
     document
@@ -504,6 +560,10 @@ function onScanSuccess(decodedText) {
       .value
       .trim();
 
+
+  // ----------------------------------------------------------
+  // VÉRIFICATION
+  // ----------------------------------------------------------
 
   if (!ticketId) {
 
@@ -514,64 +574,65 @@ function onScanSuccess(decodedText) {
   }
 
 
-  /*
-   * Arrêt immédiat de la caméra.
-   */
+  // ----------------------------------------------------------
+  // ARRÊTER LA CAMÉRA
+  // ----------------------------------------------------------
 
   stopScanner();
 
 
-  /*
-   * Préparer le formulaire.
-   */
+  // ----------------------------------------------------------
+  // PRÉPARER LE FORMULAIRE
+  // ----------------------------------------------------------
 
   document
-    .getElementById("ticketIdField")
-    .value =
-      ticketId;
+    .getElementById(
+      "ticketIdField"
+    )
+    .value = ticketId;
 
 
   document
-    .getElementById("pinField")
-    .value =
-      pin;
+    .getElementById(
+      "pinField"
+    )
+    .value = pin;
 
 
-  /*
-   * Message temporaire.
-   */
+  // ----------------------------------------------------------
+  // MESSAGE
+  // ----------------------------------------------------------
 
   showInfo(
     "⏳ Vérification du billet..."
   );
 
 
-  /*
-   * Envoi vers Apps Script.
-   *
-   * PAS de google.script.run ici.
-   *
-   * Le navigateur va recevoir directement
-   * la page de résultat générée par Apps Script.
-   */
+  // ----------------------------------------------------------
+  // ENVOYER À APPS SCRIPT
+  // ----------------------------------------------------------
 
   setTimeout(
     function() {
 
+
       document
-        .getElementById("verifyForm")
+        .getElementById(
+          "verifyForm"
+        )
         .submit();
 
+
     },
-    200
+    300
   );
 
 }
 
 
-/* ==========================================================
-   ARRÊTER LA CAMÉRA
-   ========================================================== */
+// ============================================================
+// ARRÊTER LE SCANNER
+// ============================================================
 
 function stopScanner() {
 
@@ -595,6 +656,7 @@ function stopScanner() {
   scanner
     .stop()
 
+
     .then(
       function() {
 
@@ -602,6 +664,7 @@ function stopScanner() {
 
       }
     )
+
 
     .catch(
       function() {
@@ -614,9 +677,9 @@ function stopScanner() {
 }
 
 
-/* ==========================================================
-   MESSAGE
-   ========================================================== */
+// ============================================================
+// AFFICHER UN MESSAGE
+// ============================================================
 
 function showInfo(
   message,
@@ -625,8 +688,9 @@ function showInfo(
 
 
   const info =
-    document
-      .getElementById("info");
+    document.getElementById(
+      "info"
+    );
 
 
   info.innerHTML =
@@ -640,32 +704,37 @@ function showInfo(
 
   if (error) {
 
+
     info.style.background =
       "#ffe0e0";
+
 
     info.style.color =
       "#8b0000";
 
-  }
 
-  else {
+  } else {
+
 
     info.style.background =
       "#eef6ff";
 
+
     info.style.color =
       "#164e7a";
+
 
   }
 
 }
 
 
-/* ==========================================================
-   CACHER MESSAGE
-   ========================================================== */
+// ============================================================
+// CACHER LE MESSAGE
+// ============================================================
 
 function hideInfo() {
+
 
   document
     .getElementById("info")
@@ -673,6 +742,7 @@ function hideInfo() {
     .add("hidden");
 
 }
+
 
 </script>
 
