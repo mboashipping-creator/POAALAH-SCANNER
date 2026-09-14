@@ -278,7 +278,7 @@ Code du personnel
 <form
   id="verifyForm"
   method="POST"
-  action="https://script.google.com/macros/s/AKfycbw67DipS-ZiVHUZchHVcUXUs-egBcmGIXoL59Vlq9U7PTvTm4IIuFjpP6gJcMCquxwi/exec"
+  action="https://script.google.com/macros/s/AKfycbyNG45FtGEUxPrjW7EK5sIJlgqFKVMdTpLpVSRSdZdHaGzYZ0N6ysnJpe01dfuPhl_6/exec"
   class="hidden"
 >
 
@@ -302,16 +302,12 @@ Code du personnel
 
 <script>
 
-
 // ============================================================
 // VARIABLES
 // ============================================================
 
-
 let scanner = null;
-
 let scannerRunning = false;
-
 let scanProcessing = false;
 
 
@@ -319,44 +315,25 @@ let scanProcessing = false;
 // CHARGEMENT DE LA PAGE
 // ============================================================
 
-window.addEventListener(
-  "load",
-  function() {
+window.addEventListener("load", function() {
 
+  const savedPin =
+    sessionStorage.getItem("poaalah_scanner_pin");
 
-    // --------------------------------------------------------
-    // RÉCUPÉRER LE PIN DE LA SESSION
-    // --------------------------------------------------------
+  if (savedPin) {
 
-    const savedPin =
-      sessionStorage.getItem(
-        "poaalah_scanner_pin"
-      );
-
-
-    if (savedPin) {
-
-      document
-        .getElementById("pin")
-        .value = savedPin;
-
-    }
-
+    document.getElementById("pin").value = savedPin;
 
   }
-);
+
+});
 
 
 // ============================================================
 // DÉMARRER LE SCANNER
 // ============================================================
 
-function startScanner() {
-
-
-  // ----------------------------------------------------------
-  // RÉCUPÉRER LE PIN
-  // ----------------------------------------------------------
+async function startScanner() {
 
   const pin =
     document
@@ -382,7 +359,7 @@ function startScanner() {
 
 
   // ----------------------------------------------------------
-  // SAUVEGARDER LE PIN POUR CETTE SESSION
+  // MÉMORISER LE PIN
   // ----------------------------------------------------------
 
   sessionStorage.setItem(
@@ -392,7 +369,7 @@ function startScanner() {
 
 
   // ----------------------------------------------------------
-  // ÉVITER DE DÉMARRER DEUX CAMÉRAS
+  // ÉVITER DE LANCER DEUX SCANNERS
   // ----------------------------------------------------------
 
   if (scannerRunning) {
@@ -404,114 +381,93 @@ function startScanner() {
 
   scanProcessing = false;
 
-
   hideInfo();
 
 
   const startButton =
-    document
-      .getElementById(
-        "startButton"
-      );
+    document.getElementById("startButton");
 
 
   startButton.disabled = true;
-
 
   startButton.innerText =
     "📷 CAMÉRA ACTIVE";
 
 
-  document
-    .getElementById("reader")
-    .innerHTML = "";
+  const reader =
+    document.getElementById("reader");
+
+
+  reader.innerHTML = "";
 
 
   // ----------------------------------------------------------
-  // CRÉATION DU SCANNER
+  // CRÉER UNE NOUVELLE INSTANCE
   // ----------------------------------------------------------
 
   scanner =
     new Html5Qrcode("reader");
 
 
-  // ----------------------------------------------------------
-  // DÉMARRAGE DE LA CAMÉRA
-  // ----------------------------------------------------------
+  try {
 
-  scanner
-    .start(
+    await scanner.start(
 
       {
         facingMode: "environment"
       },
 
-
       {
-
         fps: 10,
 
         qrbox: {
-
           width: 250,
-
           height: 250
-
         }
-
       },
-
 
       onScanSuccess,
 
-
       function(errorMessage) {
-
-        // Ne rien afficher
-        // pendant la recherche du QR.
-
+        // Rien à afficher pendant la recherche du QR.
       }
 
-    )
-
-
-    .then(
-      function() {
-
-        scannerRunning = true;
-
-      }
-    )
-
-
-    .catch(
-      function(error) {
-
-
-        scannerRunning = false;
-
-
-        startButton.disabled = false;
-
-
-        startButton.innerText =
-          "📷 SCANNER UN BILLET";
-
-
-        showInfo(
-
-          "❌ Impossible d'ouvrir la caméra." +
-          "<br><br>" +
-          "Autorise l'accès à la caméra " +
-          "dans ton navigateur.",
-
-          true
-
-        );
-
-
-      }
     );
+
+
+    scannerRunning = true;
+
+    startButton.disabled = true;
+
+    startButton.innerText =
+      "📷 CAMÉRA ACTIVE";
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    scannerRunning = false;
+
+    scanner = null;
+
+    startButton.disabled = false;
+
+    startButton.innerText =
+      "📷 SCANNER UN BILLET";
+
+
+    showInfo(
+
+      "❌ Impossible d'ouvrir la caméra." +
+      "<br><br>" +
+      "Vérifie que l'accès à la caméra est autorisé.",
+
+      true
+
+    );
+
+  }
 
 }
 
@@ -520,11 +476,11 @@ function startScanner() {
 // QR CODE DÉTECTÉ
 // ============================================================
 
-function onScanSuccess(decodedText) {
+async function onScanSuccess(decodedText) {
 
 
   // ----------------------------------------------------------
-  // ÉVITER LES DOUBLES SCANS
+  // EMPÊCHER LES DOUBLES SCANS
   // ----------------------------------------------------------
 
   if (
@@ -540,30 +496,9 @@ function onScanSuccess(decodedText) {
   scanProcessing = true;
 
 
-  // ----------------------------------------------------------
-  // RÉCUPÉRER LE TICKET ID
-  // ----------------------------------------------------------
-
   const ticketId =
-    String(
-      decodedText || ""
-    ).trim();
+    String(decodedText || "").trim();
 
-
-  // ----------------------------------------------------------
-  // RÉCUPÉRER LE PIN
-  // ----------------------------------------------------------
-
-  const pin =
-    document
-      .getElementById("pin")
-      .value
-      .trim();
-
-
-  // ----------------------------------------------------------
-  // VÉRIFICATION
-  // ----------------------------------------------------------
 
   if (!ticketId) {
 
@@ -575,28 +510,35 @@ function onScanSuccess(decodedText) {
 
 
   // ----------------------------------------------------------
-  // ARRÊTER LA CAMÉRA
+  // RÉCUPÉRER LE PIN MÉMORISÉ
   // ----------------------------------------------------------
 
-  stopScanner();
+  const pin =
+    sessionStorage.getItem(
+      "poaalah_scanner_pin"
+    ) ||
+    document
+      .getElementById("pin")
+      .value
+      .trim();
 
 
   // ----------------------------------------------------------
-  // PRÉPARER LE FORMULAIRE
+  // SÉCURITÉ
   // ----------------------------------------------------------
 
-  document
-    .getElementById(
-      "ticketIdField"
-    )
-    .value = ticketId;
+  if (!pin) {
 
+    scanProcessing = false;
 
-  document
-    .getElementById(
-      "pinField"
-    )
-    .value = pin;
+    showInfo(
+      "⚠️ Code du personnel manquant.",
+      true
+    );
+
+    return;
+
+  }
 
 
   // ----------------------------------------------------------
@@ -609,32 +551,43 @@ function onScanSuccess(decodedText) {
 
 
   // ----------------------------------------------------------
+  // ARRÊTER PROPREMENT LA CAMÉRA
+  // AVANT D'ENVOYER LE FORMULAIRE
+  // ----------------------------------------------------------
+
+  await stopScanner();
+
+
+  // ----------------------------------------------------------
+  // PRÉPARER LE FORMULAIRE
+  // ----------------------------------------------------------
+
+  document
+    .getElementById("ticketIdField")
+    .value = ticketId;
+
+
+  document
+    .getElementById("pinField")
+    .value = pin;
+
+
+  // ----------------------------------------------------------
   // ENVOYER À APPS SCRIPT
   // ----------------------------------------------------------
 
-  setTimeout(
-    function() {
-
-
-      document
-        .getElementById(
-          "verifyForm"
-        )
-        .submit();
-
-
-    },
-    300
-  );
+  document
+    .getElementById("verifyForm")
+    .submit();
 
 }
 
 
 // ============================================================
-// ARRÊTER LE SCANNER
+// ARRÊTER PROPREMENT LE SCANNER
 // ============================================================
 
-function stopScanner() {
+async function stopScanner() {
 
 
   if (!scanner) {
@@ -646,33 +599,50 @@ function stopScanner() {
   }
 
 
-  if (!scannerRunning) {
+  try {
 
-    return;
+    if (scannerRunning) {
+
+      await scanner.stop();
+
+    }
+
+  } catch (error) {
+
+    console.log(
+      "Arrêt caméra :",
+      error
+    );
 
   }
 
 
-  scanner
-    .stop()
+  // ----------------------------------------------------------
+  // NETTOYER COMPLÈTEMENT LE SCANNER
+  // ----------------------------------------------------------
 
+  try {
 
-    .then(
-      function() {
+    await scanner.clear();
 
-        scannerRunning = false;
+  } catch (error) {
 
-      }
-    )
-
-
-    .catch(
-      function() {
-
-        scannerRunning = false;
-
-      }
+    console.log(
+      "Nettoyage scanner :",
+      error
     );
+
+  }
+
+
+  scannerRunning = false;
+
+  scanner = null;
+
+
+  document
+    .getElementById("reader")
+    .innerHTML = "";
 
 }
 
@@ -686,11 +656,8 @@ function showInfo(
   error
 ) {
 
-
   const info =
-    document.getElementById(
-      "info"
-    );
+    document.getElementById("info");
 
 
   info.innerHTML =
@@ -704,25 +671,19 @@ function showInfo(
 
   if (error) {
 
-
     info.style.background =
       "#ffe0e0";
-
 
     info.style.color =
       "#8b0000";
 
-
   } else {
-
 
     info.style.background =
       "#eef6ff";
 
-
     info.style.color =
       "#164e7a";
-
 
   }
 
@@ -735,7 +696,6 @@ function showInfo(
 
 function hideInfo() {
 
-
   document
     .getElementById("info")
     .classList
@@ -743,9 +703,7 @@ function hideInfo() {
 
 }
 
-
 </script>
-
 
 </body>
 
